@@ -47,7 +47,7 @@ foreach ($oneTroll as $anyTwo => $value) {
     $newTroll['dolgota'] = substr_replace($newTroll['dolgota'], '.', 2, 0);
     $newTroll['shirota'] = substr_replace($newTroll['shirota'], '.', 2, 0);
     $position = $newTroll['shirota'] . ',' . $newTroll['dolgota'];
-        $idTroll++;
+    $idTroll++;
 }
 
 ?>
@@ -56,29 +56,39 @@ foreach ($oneTroll as $anyTwo => $value) {
 
 <script src="https://api-maps.yandex.ru/2.1/?lang=ru-RU" type="text/javascript"></script>
 <script type="text/javascript">
-ymaps.ready(init);
-function init() {
-	var myMap = new ymaps.Map("map", {
-		center: [<?php echo $position; ?>],
-		zoom: 16
-	}, {
-		searchControlProvider: 'yandex#search'
-	});
+    ymaps.ready(init);
 
-	var myCollection = new ymaps.GeoObjectCollection();
+    function init() {
+        var myMap = new ymaps.Map("map", {
+            center: [<?php echo $position; ?>],
+            zoom: 16
+        }, {
+            searchControlProvider: 'yandex#search'
+        });
 
-	// Добавим метку красного цвета.
-	var myPlacemark = new ymaps.Placemark([
-		<?php echo $position; ?>
-	], {
-		balloonContent: '<?php echo $position; ?>'
-	}, {
-		preset: 'islands#icon',
-		iconColor: '#ff0000'
-	});
-	myCollection.add(myPlacemark);
+        var myCollection = new ymaps.GeoObjectCollection();
 
-	myMap.geoObjects.add(myCollection);
-}
+        // Добавим метку красного цвета.
+        var myPlacemark = new ymaps.Placemark([
+            <?php echo $position; ?>
+        ], {
+            hintContent: 'бррр ',
+            balloonContent: '<?php echo
+                'Тип ОТ:' .
+                $newTroll['type'] .
+                ' Номер ОТ:' .
+                $newTroll['number'] .
+                ' Скорость:' .
+                $newTroll['speed']; ?>'
+        }, {
+            iconLayout: 'default#image',
+            iconImageHref: 'bus.png',
+            iconImageSize: [30, 30],
+
+        });
+        myCollection.add(myPlacemark);
+
+        myMap.geoObjects.add(myCollection);
+    }
 </script>
 <div id="map" style="width: 100%; height:500px"></div>
