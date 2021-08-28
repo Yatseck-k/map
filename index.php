@@ -1,24 +1,40 @@
 <?php
+/*
+ * тип пс, (1 — троллейбус, 2 — автобус, 3 — трамвай), номер, координаты, скорость, угол к северу, бортовой номер
+ */
+spl_autoload_register(function ($class_name) {
+    include $class_name . '.php';
+});
+$scripts = new MapScript();
+
+//дефолты
+$position = '45.02,38.59';
+$type = 'Некий транспорт';
+$typeIcon = 'icons/default.png';
+
 $data = file_get_contents('http://www.marsruty.ru/krasnodar/gps.txt');
 if (!$data) {
+    error_reporting(0);
     echo 'Данные недоступны';
     exit();
 }
-$keys = array('type', 'number', 'dolgota', 'shirota', 'speed', 'angle', 'bortNumber', 'break');
-
+$keys = array('type', 'number', 'dolgota', 'shirota', 'speed', 'angle', 'bortNumber', 'position');
 $data = explode(chr(10), $data);
+
 //эксперемент перечисления массивов
-$troll[] = null;
-$bus[] = null;
-$tram[] = null;
-
-$typeOT = array(
-    0 => $troll,
-    1 => $bus,
-    2 => $tram,
-);
-$idType = 0;
-
+/*
+ * $troll[] = null;
+ * $bus[] = null;
+ * tram[] = null;
+ *
+ * $typeOT = array(
+ *     0 => $troll,
+ *     1 => $bus,
+ *     2 => $tram,
+ * );
+ * $idType = 0;
+*/
+// to here
 foreach ($data as $ot => $value) { // разбиваем по типу ОТ
     // echo $ot . ' ' . $value . PHP_EOL;
     if (substr($value, 0) == 1) {
@@ -31,11 +47,8 @@ foreach ($data as $ot => $value) { // разбиваем по типу ОТ
         $tram[] = $value;
     }
 }
-//foreach ($typeOT as $anyOne) {
-foreach ($troll as $id => $value) {
+foreach ($troll as $id => $value) { //идем по тролебасам
     $oneTroll[] = explode(',', $value);
-
-
 }
 $idTroll = 0;
 foreach ($oneTroll as $anyTwo => $value) {
@@ -43,52 +56,11 @@ foreach ($oneTroll as $anyTwo => $value) {
         continue;
     }
     $newTroll = array_combine($keys, $oneTroll[$idTroll]);
-
     $newTroll['dolgota'] = substr_replace($newTroll['dolgota'], '.', 2, 0);
     $newTroll['shirota'] = substr_replace($newTroll['shirota'], '.', 2, 0);
-    $position = $newTroll['shirota'] . ',' . $newTroll['dolgota'];
+    $newTroll['position'] = $newTroll['shirota'] . ',' . $newTroll['dolgota'];
     $idTroll++;
+    $newTrolls[] = $newTroll;
 }
-
+$scripts->script($newTrolls);
 ?>
-
-<div id="map" style="width: 100%; height:500px"></div>
-
-<script src="https://api-maps.yandex.ru/2.1/?lang=ru-RU" type="text/javascript"></script>
-<script type="text/javascript">
-    ymaps.ready(init);
-
-    function init() {
-        var myMap = new ymaps.Map("map", {
-            center: [<?php echo $position; ?>],
-            zoom: 16
-        }, {
-            searchControlProvider: 'yandex#search'
-        });
-
-        var myCollection = new ymaps.GeoObjectCollection();
-
-        // Добавим метку красного цвета.
-        var myPlacemark = new ymaps.Placemark([
-            <?php echo $position; ?>
-        ], {
-            hintContent: 'бррр ',
-            balloonContent: '<?php echo
-                'Тип ОТ:' .
-                $newTroll['type'] .
-                ' Номер ОТ:' .
-                $newTroll['number'] .
-                ' Скорость:' .
-                $newTroll['speed']; ?>'
-        }, {
-            iconLayout: 'default#image',
-            iconImageHref: 'bus.png',
-            iconImageSize: [30, 30],
-
-        });
-        myCollection.add(myPlacemark);
-
-        myMap.geoObjects.add(myCollection);
-    }
-</script>
-<div id="map" style="width: 100%; height:500px"></div>
