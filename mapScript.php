@@ -18,7 +18,6 @@ class MapScript
                 }, {
                     searchControlProvider: 'yandex#search'
                 });
-
                 var myCollection = new ymaps.GeoObjectCollection();
                 <?php foreach ($newTrolls as $newTroll): ?>
                 var myPlacemark = new ymaps.Placemark([
@@ -59,16 +58,13 @@ class MapScript
                         echo $typeIcon;
                         ?>',
                     iconImageSize: [30, 30],
-
                 });
                 myCollection.add(myPlacemark);
                 <?php endforeach; ?>
-
                 myMap.geoObjects.add(myCollection);
+                myMap.setBounds(myCollection.getBounds(), {checkZoomRange: true, zoomMargin: 9});
             }
         </script>
-        <div id="map" style="width: 100%; height:500px"></div>
-
         <?php
     }
 }

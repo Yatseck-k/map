@@ -1,3 +1,17 @@
+<!DOCTYPE html>
+<body lang="ru">
+<header>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <title>Map_Krd</title>
+</header>
+<body>
+    <div class="zag">
+        <p>
+           <h1>Общественный транспорт Краснодара</h1>
+    </div>
 <?php
 /*
  * тип пс, (1 — троллейбус, 2 — автобус, 3 — трамвай), номер, координаты, скорость, угол к северу, бортовой номер
@@ -11,7 +25,6 @@ $scripts = new MapScript();
 $position = '45.02,38.59';
 $type = 'Некий транспорт';
 $typeIcon = 'icons/default.png';
-
 $data = file_get_contents('http://www.marsruty.ru/krasnodar/gps.txt');
 if (!$data) {
     error_reporting(0);
@@ -62,5 +75,26 @@ foreach ($oneTroll as $anyTwo => $value) {
     $idTroll++;
     $newTrolls[] = $newTroll;
 }
-$scripts->script($newTrolls);
-?>
+
+print '
+    <div class="map" >
+        ' . $scripts->script($newTrolls) . '
+    </div> 
+    '?>
+
+    <div class="scheme">
+        <p>
+            <h2>Схема маршрутов</h2>
+        </p>
+            <a href="scheme/eBusScheme.jpg"> <img src="icons/eBus.png" alt="Схема троллейбусных маршрутов"> </a>
+            <a href="scheme/eBusScheme.jpg"> <img src="icons/bus.png" alt="Схема автобусных маршрутов"> </a>
+            <a href="scheme/eBusScheme.jpg"> <img src="icons/train.png" alt="Схема трамвайных маршрутов"> </a>
+    </div>
+</body>
+
+
+<footer>
+    <div class="footer">
+        ©Yatseck_map_project
+    </div>
+</footer>
