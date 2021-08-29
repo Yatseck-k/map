@@ -12,22 +12,22 @@
     <p>
     <h1>Общественный транспорт Краснодара</h1>
 </div>
-<div class="radio">
-    <form>
+<!-- <div class="radio">
+    <form  method="post">
         <p>
-            <input type="checkbox" checked name="eBus"/>Троллейбус
+            <input type="checkbox" checked name="typeOT" value="eBus"/>Троллейбус
         </p>
         <p>
-            <input type="checkbox" name="bus"/>Автобус
+            <input type="checkbox" name="typeOT" value="bus"/>Автобус
         </p>
         <p>
-            <input type="checkbox" name="train"/>Трамвай
+            <input type="checkbox" name="typeOT" value="train"/>Трамвай
         </p>
         <p>
-            <button type="submit">Выбрать</button>
+            <button type="submit" value="submit">Выбрать</button>
         </p>
     </form>
-</div>
+</div> -->
 <?php
 /*
  * тип пс, (1 — троллейбус, 2 — автобус, 3 — трамвай), номер, координаты, скорость, угол к северу, бортовой номер
@@ -69,6 +69,20 @@ $typesOT = array(
     1 => $bus,
     2 => $train,
 );
+/*
+if ($_POST['typeOT']) {
+    $answer = $_POST['typeOT'];
+    if ($answer == "eBus") {
+        unset($bus, $train);
+    }
+    if ($answer == "bus") {
+        unset($eBus, $train);
+    }
+    if ($answer == "train") {
+        unset($eBus, $bus);
+    }
+}
+*/
 foreach ($typesOT as $idType => $valueType) { //проходим по всем типам ОТ
     foreach ($valueType as $idUnit => $valueUnit) {  //проходим по каждому отдельной единице в типе
         $unit[] = explode(',', $valueUnit);
@@ -105,6 +119,6 @@ print '
 
 <footer>
     <div class="footer">
-    &copy;Yatseck_map_project
+        &copy;Yatseck_map_project
     </div>
 </footer>
