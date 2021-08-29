@@ -12,6 +12,22 @@
         <p>
            <h1>Общественный транспорт Краснодара</h1>
     </div>
+    <div class="radio" >
+        <form>
+            <p>
+                <input type="checkbox" checked name="eBus"/>Троллейбус
+            </p>
+            <p>
+                <input type="checkbox" name="bus"/>Автобус
+            </p>
+            <p>
+                <input type="checkbox" name="train"/>Трамвай
+            </p>
+            <p>
+                <button type="submit">Выбрать</button>
+            </p>
+        </form>
+    </div>
 <?php
 /*
  * тип пс, (1 — троллейбус, 2 — автобус, 3 — трамвай), номер, координаты, скорость, угол к северу, бортовой номер
@@ -48,37 +64,37 @@ $data = explode(chr(10), $data);
  * $idType = 0;
 */
 // to here
-foreach ($data as $ot => $value) { // разбиваем по типу ОТ
+foreach ($data as $idData => $valueData) { // разбиваем по типу ОТ
     // echo $ot . ' ' . $value . PHP_EOL;
-    if (substr($value, 0) == 1) {
-        $troll[] = $value;
+    if (substr($valueData, 0) == 1) {
+        $troll[] = $valueData;
     }
-    if (substr($value, 0) == 2) {
-        $bus[] = $value;
+    if (substr($valueData, 0) == 2) {
+        $bus[] = $valueData;
     }
-    if (substr($value, 0) == 3) {
-        $tram[] = $value;
+    if (substr($valueData, 0) == 3) {
+        $tram[] = $valueData;
     }
 }
 foreach ($troll as $id => $value) { //идем по тролебасам
     $oneTroll[] = explode(',', $value);
 }
-$idTroll = 0;
+$idOT = 0;
 foreach ($oneTroll as $anyTwo => $value) {
     if (!$oneTroll) {
         continue;
     }
-    $newTroll = array_combine($keys, $oneTroll[$idTroll]);
+    $newTroll = array_combine($keys, $oneTroll[$idOT]);
     $newTroll['dolgota'] = substr_replace($newTroll['dolgota'], '.', 2, 0);
     $newTroll['shirota'] = substr_replace($newTroll['shirota'], '.', 2, 0);
     $newTroll['position'] = $newTroll['shirota'] . ',' . $newTroll['dolgota'];
-    $idTroll++;
-    $newTrolls[] = $newTroll;
+    $idOT++;
+    $transports[] = $newTroll;
 }
 
 print '
     <div class="map" >
-        ' . $scripts->script($newTrolls) . '
+        ' . $scripts->script($transports) . '
     </div> 
     '?>
 

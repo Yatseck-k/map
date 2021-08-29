@@ -2,10 +2,10 @@
 
 class MapScript
 {
-    public function script($newTrolls = null)
+    public function script($transports = null)
     {
         ?>
-        <div id="map" style="width: 100%; height:500px"></div>
+        <div class="map" id="map" style="width: 100%; height:500px"></div>
 
         <script src="https://api-maps.yandex.ru/2.1/?lang=ru-RU" type="text/javascript"></script>
         <script type="text/javascript">
@@ -13,19 +13,19 @@ class MapScript
 
             function init() {
                 var myMap = new ymaps.Map("map", {
-                    center: [<?php echo $newTrolls[0]['position']; ?>],
+                    center: [<?php echo $transports[0]['position']; ?>],
                     zoom: 16
                 }, {
                     searchControlProvider: 'yandex#search'
                 });
                 var myCollection = new ymaps.GeoObjectCollection();
-                <?php foreach ($newTrolls as $newTroll): ?>
+                <?php foreach ($transports as $transport): ?>
                 var myPlacemark = new ymaps.Placemark([
-                    <?php echo $newTroll['position']; ?>
+                    <?php echo $transport['position']; ?>
                 ], {
                     hintContent: 'brrr',
                     balloonContent: '<?php
-                        switch ($newTroll['type']) {
+                        switch ($transport['type']) {
                             case 1:
                                 $type = 'Троллейбус';
                                 break;
@@ -38,13 +38,13 @@ class MapScript
                         }
                         echo
                             $type . ' №' .
-                            $newTroll['number'] . ' ' .
-                            $newTroll['speed'] . ' ' .
+                            $transport['number'] . ' ' .
+                            $transport['speed'] . ' ' .
                             'км/ч'; ?>'
                 }, {
                     iconLayout: 'default#image',
                     iconImageHref: '<?php
-                        switch ($newTroll['type']) {
+                        switch ($transport['type']) {
                             case 1:
                                 $typeIcon = 'icons/eBus.png';
                                 break;
