@@ -103,8 +103,8 @@ print '
             <h2>Схема маршрутов</h2>
         </p>
             <a href="scheme/eBusScheme.jpg"> <img src="icons/eBus.png" alt="Схема троллейбусных маршрутов"> </a>
-            <a href="scheme/eBusScheme.jpg"> <img src="icons/bus.png" alt="Схема автобусных маршрутов"> </a>
-            <a href="scheme/eBusScheme.jpg"> <img src="icons/train.png" alt="Схема трамвайных маршрутов"> </a>
+            <a href="scheme/busScheme.jpg"> <img src="icons/bus.png" alt="Схема автобусных маршрутов"> </a>
+            <a href="scheme/trainScheme.jpg"> <img src="icons/train.png" alt="Схема трамвайных маршрутов"> </a>
     </div>
 </body>
 
