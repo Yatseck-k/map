@@ -1,3 +1,10 @@
+<?php
+spl_autoload_register(function ($class_name) {
+    include $class_name . '.php';
+});
+$scripts = new mapScript();
+
+?>
 <!DOCTYPE html>
 <body lang="ru">
 <header>
@@ -7,6 +14,7 @@
     <meta charset="UTF-8">
     <title>Map_Krd</title>
 </header>
+
 <body>
 <div class="zag">
     <p>
@@ -33,10 +41,6 @@
  * тип пс, (1 — троллейбус, 2 — автобус, 3 — трамвай), номер, координаты, скорость, угол к северу, бортовой номер
  * longitude - долгота latitude - широта
  */
-spl_autoload_register(function ($class_name) {
-    include $class_name . '.php';
-});
-$scripts = new MapScript();
 
 //дефолты
 $position = '45.02,38.59';
